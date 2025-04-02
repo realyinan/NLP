@@ -46,7 +46,18 @@ def word_cloud():
     # 词云展示
     get_word_cloud(p__train_a_vocab)
 
+    # 获取训练集的负样本
+    n_train_data = train_data[train_data["label"] == 0]["text"]
+
+    # 获取正样本所有的形容词
+    n__train_a_vocab = list(chain(*map(lambda x: get_a_list(x), n_train_data)))
+    # print(len(p__train_a_vocab))
+
+    # 词云展示
+    get_word_cloud(n__train_a_vocab)
+
 
 
 if __name__ == "__main__":
     word_cloud()
+    
