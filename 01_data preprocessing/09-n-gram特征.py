@@ -1,6 +1,6 @@
 def n_gram(input_list):
     n_range = 2
-    return set(zip(*[input_list[i:] for i in range(2)]))
+    return set(zip(*[input_list[i:] for i in range(n_range)]))
 
 
 if __name__ == "__main__":

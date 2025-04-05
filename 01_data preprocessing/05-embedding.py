@@ -1,5 +1,5 @@
 import torch
-from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.text import Tokenizer
 from torch.utils.tensorboard import SummaryWriter
 import jieba
 import torch.nn as nn
@@ -32,7 +32,7 @@ def nnembedding_show():
     sentence2id = my_tokenizer.texts_to_sequences(word_list)
     # print(sentence2id)
 
-    # 创建embeddingceng
+    # 创建embedding层
     embed = nn.Embedding(num_embeddings=len(my_token_list), embedding_dim=8)
     # print(embed.weight)
     # print(embed.weight.shape)

@@ -1,5 +1,5 @@
 # 导入keras中的词汇映射器Tokenizer
-from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.text import Tokenizer
 # 导入用于对象保存与加载的joblib
 import joblib
 
@@ -34,8 +34,6 @@ def onehot_use():
     print(f"当前单词的onehot编码: {zero_list}")
 
 
-
-
 if __name__ == "__main__":
-    # onehot_gen()
-    onehot_use()
+    onehot_gen()
+    # onehot_use()
