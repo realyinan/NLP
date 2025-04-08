@@ -37,7 +37,6 @@ def read_data(filename):
     return my_list_x, my_list_y
 
 
-
 class NameClassDataset(Dataset):
     def __init__(self, my_list_x, my_list_y):
         self.my_list_x = my_list_x

@@ -76,7 +76,7 @@ def test_positionEncoding():
     # 对enbedding后的结果加上编码信息
     my_position = PositionEncoding(d_model=512, dropout_p=0.1)
     position_x = my_position(embed_x)
-    # print(f"Embedding+position: {position_x.shape}")
+    print(f"Embedding+position的结果: {position_x.shape}")
     return position_x
 
 
