@@ -512,5 +512,6 @@ if __name__ == "__main__":
     # test_decoder()
     # test_attenDecoder()
     # Train_seq2seq()
-    test_seq2seqEvaluate()
+    # test_seq2seqEvaluate()
     # test_attention()
+    ...
