@@ -61,18 +61,18 @@ def rnn_for_multinum():
     input = torch.randn(4, 1, 5)
     hidden = torch.zeros(1, 1, 6)
     # 方式1：1个1个的送字符
-    # for i in range(4):
-    #     tmp = input[i][0]
-    #     print("tmp.shape--->", tmp.shape) # 拿出1个数组
-    #     output, hidden = rnn(tmp.unsqueeze(0).unsqueeze(0), hidden)
-    #     print(i+1,'output--->', output, )
-    #     print(i+1,'hidden--->', hidden, )
-    #     print('*'*80)
+    for i in range(4):
+        tmp = input[i][0]
+        print("tmp.shape--->", tmp.shape) # 拿出1个数组
+        output, hidden = rnn(tmp.unsqueeze(0).unsqueeze(0), hidden)
+        print(i+1,'output--->', output, )
+        print(i+1,'hidden--->', hidden, )
+        print('*'*80)
+
     # 一次性将数据送入模型
-    hidden = torch.zeros(1, 1, 6)
-    output, hn = rnn(input, hidden)
-    print('output2--->', output, output.shape)
-    print('hn--->', hn, hn.shape)
+    # output, hn = rnn(input, hidden)
+    # print('output2--->', output, output.shape)
+    # print('hn--->', hn, hn.shape)
 
 
 # RNN模型循环机制的理解:多个样本
@@ -91,7 +91,6 @@ def dm04_rnn_for_multinum():
         print(i+1,'hidden--->', hidden, )
         print('*'*80)
     # # 一次性将数据送入模型
-    # hidden = torch.zeros(1, 3, 6)
     # output, hn = rnn(input, hidden)
     # print('output2--->', output, output.shape)
     # print('hn--->', hn, hn.shape)
@@ -137,5 +136,6 @@ if __name__ == "__main__":
     # rnn_sequence()
     # rnn_for_multinum()
     # dm04_rnn_for_multinum()
-    rnn_numlayers()
-    # rnn_batch_first()
+    # rnn_numlayers()
+    rnn_batch_first()
+    ...

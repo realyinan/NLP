@@ -16,7 +16,7 @@ bert_tokenizer = BertTokenizer.from_pretrained("./model/bert-base-chinese")
 
 # 加载预训练模型
 bert_model = BertModel.from_pretrained("./model/bert-base-chinese")
-# bert_model.to(device)
+bert_model.to(device)
 
 
 def loaddataset():
@@ -197,9 +197,9 @@ def model2dev():
     
 
 if __name__ == "__main__":
-    loaddataset()
+    # loaddataset()
     # test_dataset()
-    # test_model()
+    test_model()
     # model2train()
     # model2dev()
     ...

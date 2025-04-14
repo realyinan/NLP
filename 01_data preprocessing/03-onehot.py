@@ -35,5 +35,5 @@ def onehot_use():
 
 
 if __name__ == "__main__":
-    onehot_gen()
-    # onehot_use()
+    # onehot_gen()
+    onehot_use()

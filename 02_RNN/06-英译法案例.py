@@ -14,7 +14,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
 # 定义开始字符
 SOS_token = 0
@@ -92,11 +92,11 @@ class MyPairsDataset(Dataset):
         # 将x, y 张量化表示
         x1 = [english_word2index[word] for word in x.split(" ")]
         x1.append(EOS_token)
-        tensor_x = torch.tensor(x1, dtype=torch.long, device=device)
+        tensor_x = torch.tensor(x1, dtype=torch.long)
 
         y1 = [french_word2index[word] for word in y.split(" ")]
         y1.append(EOS_token)
-        tensor_y = torch.tensor(y1, dtype=torch.long, device=device)
+        tensor_y = torch.tensor(y1, dtype=torch.long)
         return tensor_x, tensor_y
     
 
@@ -122,14 +122,13 @@ class EncoderGRU(nn.Module):
         return output, hn
     
     def inithidden(self):
-        return torch.zeros(1, 1, self.hidden_size, device=device)
+        return torch.zeros(1, 1, self.hidden_size)
     
 
 def test_encoder():
     mydataset = MyPairsDataset(my_pairs)
     my_dataloader = DataLoader(dataset=mydataset, batch_size=1, shuffle=True)
     my_encoder_gru = EncoderGRU(english_word_n, 256)
-    my_encoder_gru = my_encoder_gru.to(device)
     for x, y in my_dataloader:
         h0 = my_encoder_gru.inithidden()
         output, hn = my_encoder_gru(x, h0)
@@ -261,11 +260,9 @@ def test_attenDecoder():
     mydataset = MyPairsDataset(my_pairs)
     my_dataloader = DataLoader(dataset=mydataset, batch_size=1, shuffle=True)
     encoder_gru = EncoderGRU(english_word_n, 256)
-    encoder_gru = encoder_gru.to(device)
 
     # 实例化带attention的解码器
     attention_decoder_gru = AttenDecoder(vocab_size=french_word_n, hidden_size=256)
-    attention_decoder_gru = attention_decoder_gru.to(device)
 
     # 迭代数据
     for i, (x, y) in enumerate(my_dataloader):
@@ -279,7 +276,7 @@ def test_attenDecoder():
         print(f"hidden: {hidden.shape}")
 
         # 准备解码器的输入
-        encoder_c = torch.zeros(MAX_LENGTH, encoder_gru.hidden_size, device=device)
+        encoder_c = torch.zeros(MAX_LENGTH, encoder_gru.hidden_size)
         # 将真实的编码结果赋值
         for idx in range(output.shape[1]):
             encoder_c[idx] = output[0][idx]
@@ -508,7 +505,7 @@ def test_attention():
 
 
 if __name__ == "__main__":
-    # test_encoder()
+    test_encoder()
     # test_decoder()
     # test_attenDecoder()
     # Train_seq2seq()

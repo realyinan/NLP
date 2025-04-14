@@ -16,14 +16,14 @@ def test_classfication():
     message = "我爱北京天安门"
     # 3.1 对上述字符串进行编码, 变成向量送给模型
     # padding 补齐到最大长度, truncation 截断
-    inputs = cls_tokenizer.encode(message, padding="max_length", truncation=True, max_length=20, return_tensors="pt")
+    inputs = cls_tokenizer.encode_plus(message, padding="max_length", truncation=True, max_length=20, return_tensors="pt")
     # inputs = cls_tokenizer.encode(message, padding="max_length", truncation=True, max_length=20)
 
     # 4. 设置模型为评估模式
     cls_model.eval()
 
     # 5. 将数据送入model
-    result = cls_model(inputs)
+    result = cls_model(**inputs)
 
     # 打印文本分类的结果
     print(result)

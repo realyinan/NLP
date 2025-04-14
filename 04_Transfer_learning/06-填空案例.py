@@ -16,7 +16,7 @@ bert_tokenizer = BertTokenizer.from_pretrained("./model/bert-base-chinese")
 
 # 加载预训练模型
 bert_model = BertModel.from_pretrained("./model/bert-base-chinese")
-# bert_model.to(device)
+bert_model.to(device)
 
 
 def collate_fn1(data):
@@ -168,7 +168,7 @@ def model2dev():
 
 
 if __name__ == "__main__":
-    # test_dataset()
+    test_dataset()
     # test_model()
     # model2train()
-    model2dev()
+    # model2dev()

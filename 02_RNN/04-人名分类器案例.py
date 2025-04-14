@@ -7,12 +7,15 @@ import matplotlib.pyplot as plt
 import time
 from tqdm import tqdm
 import json
+import os
 
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # 获取常用的字符
 all_letters = string.ascii_letters + " ,.;'"
 # print(len(all_letters))
-# print("n_letters: ", all_letters)
+# print("all_letters: ", all_letters)
 
 
 # 国家名 种类数
@@ -194,7 +197,7 @@ class MyGRU(nn.Module):
     
 
 my_lr = 1e-3
-epochs = 1
+epochs = 4
 
 # 定义RNN模型的训练函数
 def train_rnn():
@@ -205,6 +208,7 @@ def train_rnn():
     output_size = categorynum
 
     my_rnn = MyRNN(input_size=input_size, hidden_size=hidden_size, output_size=output_size)
+    my_rnn.to(device)
     my_crossentrophy = nn.NLLLoss()
     my_adam = optim.Adam(my_rnn.parameters(), lr=my_lr)
     # print(my_rnn)
@@ -223,8 +227,11 @@ def train_rnn():
 
         # 开始内部迭代数据
         for i, (x, y) in enumerate(tqdm(my_dataloader)):
+            x = x.to(device)
+            y = y.to(device)
             # x -> [1, 6, 57]
             h0 = my_rnn.inithidden()  # h0 = [1, 1, 128]
+            h0 = h0.to(device)
             output, hn = my_rnn(x[0], h0)  # output -> [1, 18]
 
             # 计算损失
@@ -240,7 +247,7 @@ def train_rnn():
             my_adam.step()
             
             total_iter_num += 1
-            total_loss += my_loss.item()
+            total_loss += my_loss.detach().item()
             # 计算已经训练的样本预测正确的个数
             tag = (1 if torch.argmax(output).item() == y.item() else 0)
             total_acc_num += tag
@@ -263,7 +270,7 @@ def train_rnn():
                 print('轮次:%d, 损失:%.6f, 时间:%d, 准确率:%.4f' %(epoch_idx+1, temp_loss, use_time - start_time, temp_acc))
         
         # 每一轮都保存模型
-        torch.save(my_rnn.state_dict(), f="./model/rnn_%d.bin" % (epoch_idx+1))
+    torch.save(my_rnn.state_dict(), f="./model/rnn.bin")
     
     # 计算总时间
     all_time = time.time() - start_time
@@ -286,6 +293,7 @@ def train_lstm():
     output_size = categorynum
 
     my_lstm = MyLSTM(input_size=input_size, hidden_size=hidden_size, output_size=output_size)
+    my_lstm.to(device)
     my_crossentrophy = nn.NLLLoss()
     my_adam = optim.Adam(my_lstm.parameters(), lr=my_lr)
 
@@ -303,8 +311,12 @@ def train_lstm():
 
         # 开始内部迭代数据
         for i, (x, y) in enumerate(tqdm(my_dataloader)):
+            x = x.to(device)
+            y = y.to(device)
             # x -> [1, 6, 57]
             h0, c0 = my_lstm.inithidden()  # h0 = [1, 1, 128]
+            h0 = h0.to(device)
+            c0 = c0.to(device)
             output, hn, cn = my_lstm(x[0], h0, c0)  # output -> [1, 18]
 
             # 计算损失
@@ -320,7 +332,7 @@ def train_lstm():
             my_adam.step()
             
             total_iter_num += 1
-            total_loss += my_loss.item()
+            total_loss += my_loss.detach().item()
             # 计算已经训练的样本预测正确的个数
             tag = (1 if torch.argmax(output).item() == y.item() else 0)
             total_acc_num += tag
@@ -343,7 +355,7 @@ def train_lstm():
                 print('轮次:%d, 损失:%.6f, 时间:%d, 准确率:%.4f' %(epoch_idx+1, temp_loss, use_time - start_time, temp_acc))
         
         # 每一轮都保存模型
-        torch.save(my_lstm.state_dict(), f="./model/lstm_%d.bin" % (epoch_idx+1))
+    torch.save(my_lstm.state_dict(), f="./model/lstm.bin")
     
     # 计算总时间
     all_time = time.time() - start_time
@@ -365,6 +377,7 @@ def train_gru():
     output_size = categorynum
 
     my_gru = MyGRU(input_size=input_size, hidden_size=hidden_size, output_size=output_size)
+    my_gru = my_gru.to(device)
     my_crossentrophy = nn.NLLLoss()
     my_adam = optim.Adam(my_gru.parameters(), lr=my_lr)
 
@@ -382,8 +395,11 @@ def train_gru():
 
         # 开始内部迭代数据
         for i, (x, y) in enumerate(tqdm(my_dataloader)):
+            x = x.to(device)
+            y = y.to(device)
             # x -> [1, 6, 57]
             h0 = my_gru.inithidden()  # h0 = [1, 1, 128]
+            h0 = h0.to(device)
             output, hn = my_gru(x[0], h0)  # output -> [1, 18]
 
             # 计算损失
@@ -399,7 +415,7 @@ def train_gru():
             my_adam.step()
             
             total_iter_num += 1
-            total_loss += my_loss.item()
+            total_loss += my_loss.detach().item()
             # 计算已经训练的样本预测正确的个数
             tag = (1 if torch.argmax(output).item() == y.item() else 0)
             total_acc_num += tag
@@ -422,7 +438,7 @@ def train_gru():
                 print('轮次:%d, 损失:%.6f, 时间:%d, 准确率:%.4f' %(epoch_idx+1, temp_loss, use_time - start_time, temp_acc))
         
         # 每一轮都保存模型
-        torch.save(my_gru.state_dict(), f="./model/gru_%d.bin" % (epoch_idx+1))
+    torch.save(my_gru.state_dict(), f="./model/gru.bin")
     
     # 计算总时间
     all_time = time.time() - start_time
@@ -483,9 +499,9 @@ def show_picture():
 
 
 # 定义模型训练保存路径
-my_rnn_path = "./model/rnn_1.bin"
-my_lstm_path = "./model/lstm_1.bin"
-my_gru_path = "./model/gru_1.bin"
+my_rnn_path = "./model/rnn.bin"
+my_lstm_path = "./model/lstm.bin"
+my_gru_path = "./model/gru.bin"
 
 
 # 定义文本转换为张量的函数

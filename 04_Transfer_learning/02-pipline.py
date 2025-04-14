@@ -15,7 +15,7 @@ def test_classification():
 def test_features_extraction():
     model = pipeline(task="feature-extraction", model="./model/bert-base-chinese")
     result = model("人生该如何起头")
-    print(f"文本分类的结果: {np.array(result).shape}")
+    print(f"特征提取的结果: {np.array(result).shape}")
     # # 7个字变成9个字原因: [CLS] 人 生 该 如 何 起 头 [SEP]
 
 
