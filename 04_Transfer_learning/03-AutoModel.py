@@ -147,11 +147,11 @@ def test_NER():
 
 if __name__ == "__main__":
     # test_classfication()
-    test_features_extraction()
+    # test_features_extraction()
     # test_fill_mask()
     # test_question_answering()
     # test_summary()
-    # test_NER()
+    test_NER()
     ...
 
 
